@@ -20,10 +20,11 @@ PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuil
 - **Fail-closed packet:** only the currently approved, staged, hash-verified behavior-only SPEC.md reaches the builder packet.
 - **Audit receipt:** optional, always outside the builder packet, including stage, snapshot, specification and ledger-head hashes.
 - **Provider-neutral Investigator + Judge interfaces:** an offline structured observation adapter creates unapproved v2 candidates; a deterministic advisory judge returns typed return/human-review decisions based on provenance claims and optional local Vault integrity checks. Neither can approve, build, or ship.
+- **Independent reference builder (demo only):** accepts one synthetic search rule in approved SPEC.md, runs a fixed locally pinned no-network Docker image, validates returned source file hashes, and writes only unverified candidate code into a separate quarantine folder. This is not yet general AI coding or release.
 - **Restricted Docker boundary probe:** a fresh approved SPEC-only mount, locally pinned Docker image ID, no network, read-only root filesystem, capability limits, explicit execution consent and a bounded probe receipt. This is not a code builder or security certification.
 - **CI and negative controls:** Python 3.10/3.12/3.13 tests for tampering, missing files, changed candidates, revoked approval, unverified claims, malformed judge responses and directory separation.
 
-**Important limitations:** reviewer names are *not authenticated*, the snapshot is an investigator-supplied manifest rather than a verified live binary, and an attacker who can rewrite the whole ledger could recompute it without an externally saved ledger-head hash. The builder packet directory is not an OS-level sandbox. A restricted container probe now exists, but an actual isolated **code builder**, external-model investigator/judge integration, automated reverse engineering, mutation tests, authenticated reviewer identity and Anti-M release signatures remain future work.
+**Important limitations:** reviewer names are *not authenticated*, the snapshot is an investigator-supplied manifest rather than a verified live binary, and an attacker who can rewrite the whole ledger could recompute it without an externally saved ledger-head hash. The builder packet directory is not an OS-level sandbox. The limited, deterministic Docker **reference builder** now demonstrates an isolated spec-to-quarantined-artifact handoff. General AI builders, external-model investigator/judge integration, automated reverse engineering, genuine mutation tests, authenticated reviewer identity and Anti-M release signatures remain future work.
 
 ## Use the local role interfaces
 
@@ -47,6 +48,12 @@ phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA
 # Execution is opt-in, and writes only an out-of-vault receipt:
 phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --image sha256:YOUR_IMAGE_ID --receipt ./probe-receipt.json --execute --acknowledge-docker-risk
 ```
+
+## Run the reference builder
+
+A known first-party demo worker can accept one precisely supported synthetic title-search requirement from an approved Vault stage and return unverified source code. Nothing runs automatically, and output is never shipped. See [Builder Contract](docs/BUILDER.md) for the supported spec, Docker instructions, trust model and result receipt.
+
+    phicleanroom builder reference --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --image sha256:YOUR_LOCAL_IMAGE_ID
 
 ## Try the gate
 
@@ -83,7 +90,7 @@ Authorized observation -> Evidence record -> Human review -> Gate
                                               Anti-M / human release approval
 ```
 
-Implemented today: curated observations -> unapproved candidate -> local artifact inventory + typed advisory check -> human Vault review -> behavior-only SPEC.md + optional separate receipt -> restricted **probe-only** Docker execution. Actual isolated coding and release are not implemented. Fresh-builder process isolation, reviewer identity verification, and Anti-M completion remain future stages.
+Implemented today: curated observations -> unapproved candidate -> local artifact inventory + typed advisory check -> human Vault review -> behavior-only SPEC.md + optional separate receipt -> optional restricted Docker probe and **synthetic reference builder** that quarantines candidate source. General independent model coding, acceptance validation and release are not implemented. Fresh-builder process isolation, reviewer identity verification, and Anti-M completion remain future stages.
 
 For the vault command sequence, see [docs/VAULT.md](docs/VAULT.md). Also see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/SCHEMA.md](docs/SCHEMA.md).
 
