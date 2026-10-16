@@ -5,7 +5,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from phicleanroom import builder, vault, verifier
+from phicleanroom import antim, builder, vault, verifier
 
 RULE = "An exact title query finds its matching item."
 
@@ -61,6 +61,15 @@ def main(builder_image: str, verifier_image: str) -> None:
         assert all(row["status"] == "KILLED_ASSERTION" for row in verified["mutants"])
         assert verified["source_sha256"] == hashlib.sha256((quarantine / "search.py").read_bytes()).hexdigest()
         assert json.loads(verify_receipt.read_text())["source_sha256"] == verified["source_sha256"]
+        # Anti-M consumes genuine independently verified receipts and freezes them
+        # to the current Vault ledger head. The contract is never a DONE/release.
+        completion_file = root / "completion-contract.json"
+        completion = antim.create_contract(
+            private, stage, quarantine, build_receipt, verify_receipt, completion_file)
+        assert completion["status"] == "READY_FOR_HUMAN_RELEASE_REVIEW"
+        assert antim.assess(private, quarantine, build_receipt,
+                            verify_receipt, completion_file)["authority"] == "NONE"
+        assert "human" in json.dumps(json.loads(completion_file.read_text())).lower() or completion["authority"] == "NONE"
         # Mutate quarantined bytes and prove old builder receipt cannot bless them.
         (quarantine / "search.py").write_text("def search(items, query):\n    return []\n")
         try:
@@ -72,9 +81,17 @@ def main(builder_image: str, verifier_image: str) -> None:
         else:
             raise AssertionError("tampered source reused stale receipt")
         assert not (root / "tampered-receipt.json").exists()
+        try:
+            antim.assess(private, quarantine, build_receipt,
+                         verify_receipt, completion_file)
+        except (antim.CompletionError, verifier.VerifyError):
+            pass
+        else:
+            raise AssertionError("Anti-M accepted a tampered source using old receipts")
         print("REAL DOCKER INDEPENDENT VERIFICATION PASS")
         print("7 acceptance checks passed; 3 AST-mutated candidates killed by assertions")
         print("Tampered candidate blocked from reusing old builder receipt")
+        print("Anti-M freeze: real receipts accepted before mutation, rejected after source tamper")
         print("No automatic release, no approval authority")
 
 
