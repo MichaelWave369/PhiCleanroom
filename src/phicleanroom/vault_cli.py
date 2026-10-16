@@ -17,7 +17,8 @@ def main(args: list[str] | None = None) -> int:
     ingest.add_argument("--file", required=True, type=Path)
     stage = commands.add_parser("stage", help="Freeze a schema v2 candidate and verify its artifacts")
     stage.add_argument("--input", required=True, type=Path)
-    commands.add_parser("verify", help="Verify all vault objects, stages and the hash-linked ledger")
+    verify = commands.add_parser("verify", help="Verify objects, ledger, and optional independent head")
+    verify.add_argument("--expected-head", help="SHA-256 ledger head saved independently")
     for name in ("preview", "status", "review", "packet"):
         command = commands.add_parser(name)
         command.add_argument("--stage", required=True, help="Immutable staged candidate SHA-256")
@@ -42,8 +43,11 @@ def main(args: list[str] | None = None) -> int:
         elif opts.command == "verify":
             with vault.vault_lock(root):
                 events = vault.verify_history(root)
+                head = events[-1]["event_hash"] if events else vault.GENESIS
+                if opts.expected_head is not None and opts.expected_head != head:
+                    raise vault.VaultError("ledger head mismatches independently retained anchor")
                 print(f"VERIFIED: {len(events)} ledger events")
-                print(f"LEDGER HEAD: {events[-1]['event_hash'] if events else vault.GENESIS}")
+                print(f"LEDGER HEAD: {head}")
         elif opts.command == "review":
             digest = vault.review(root, opts.stage, opts.rule, opts.decision, opts.reviewer, opts.note)
             print(f"REVIEW RECORDED: {digest}")
