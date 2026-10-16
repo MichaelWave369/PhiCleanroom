@@ -95,6 +95,10 @@ never passed as CLI arguments.
 - The public GitHub Pages interface cannot access a private local Vault
   or generate keyed completion attestations.
 
+## Independently retained checkpoints
+
+An Anti-M contract is bound to a locally hash-linked Vault ledger. The separate [Witness checkpoint command](WITNESS.md) can freeze a compact SHA-256 commitment over the **current** contract and ledger head. Its digest only acts as a meaningful comparison when the operator already retained that digest outside the mutable local evidence collection. Neither the witness nor this local HMAC attestation authenticates a person or authorizes deployment.
+
 ## Verification coverage
 
 Unit tests prove fail-closed handling of revoked approval, new ledger events,
