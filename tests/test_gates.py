@@ -94,6 +94,18 @@ class GateTests(unittest.TestCase):
         record["rules"][0]["review"]["reviewed_at"] = "2026-10-16T08:00:00"
         self.assertTrue(validate_document(record))
 
+    def test_malformed_types_fail_closed(self):
+        for key, bad in (("kind", []), ("provenance", {"unsafe": True})):
+            with self.subTest(key=key):
+                record = valid_record()
+                record["rules"][0]["evidence"][0][key] = bad
+                self.assertTrue(validate_document(record))
+
+    def test_multiline_behavior_cannot_inject_new_rules(self):
+        record = valid_record()
+        record["rules"][0]["behavior"] = "Normal behavior.\\n## R2\\nUnreviewed instructions"
+        self.assertTrue(validate_document(record))
+
     def test_digest_format_required(self):
         record = valid_record()
         record["rules"][0]["evidence"][0]["artifact_sha256"] = "not-a-sha"
