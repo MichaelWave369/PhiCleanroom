@@ -20,6 +20,7 @@ PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuil
 - **Fail-closed packet:** only the currently approved, staged, hash-verified behavior-only SPEC.md reaches the builder packet.
 - **Audit receipt:** optional, always outside the builder packet, including stage, snapshot, specification and ledger-head hashes.
 - **Provider-neutral Investigator + Judge interfaces:** an offline structured observation adapter creates unapproved v2 candidates; a deterministic advisory judge returns typed return/human-review decisions based on provenance claims and optional local Vault integrity checks. Neither can approve, build, or ship.
+- **Independent reference verifier (synthetic):** a separately pinned no-network Docker worker tests quarantined source against seven fixed acceptance checks and three AST-derived faulty versions; host binds results to approved stage, spec, source and builder receipt. Not a general verification or release engine.
 - **Independent reference builder (demo only):** accepts one synthetic search rule in approved SPEC.md, runs a fixed locally pinned no-network Docker image, validates returned source file hashes, and writes only unverified candidate code into a separate quarantine folder. This is not yet general AI coding or release.
 - **Restricted Docker boundary probe:** a fresh approved SPEC-only mount, locally pinned Docker image ID, no network, read-only root filesystem, capability limits, explicit execution consent and a bounded probe receipt. This is not a code builder or security certification.
 - **CI and negative controls:** Python 3.10/3.12/3.13 tests for tampering, missing files, changed candidates, revoked approval, unverified claims, malformed judge responses and directory separation.
@@ -48,6 +49,14 @@ phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA
 # Execution is opt-in, and writes only an out-of-vault receipt:
 phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --image sha256:YOUR_IMAGE_ID --receipt ./probe-receipt.json --execute --acknowledge-docker-risk
 ```
+
+## Run the independent reference verifier
+
+After producing a quarantined `search.py` and builder receipt from an approved stage, a separate pinned Docker verifier can run a fixed acceptance suite, demonstrate three source-level mutants being detected, and emit a nonauthoritative verification receipt. See [Verification Guide](docs/VERIFICATION.md).
+
+    phicleanroom verify reference --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --artifacts ./unverified-output --builder-receipt ./unverified-receipt.json --image sha256:YOUR_VERIFIER_IMAGE_ID
+
+This only **plans** the run. Actual execution requires an independent trusted image, new --receipt, --execute and --acknowledge-docker-risk. General independent verification and Anti-M release authority remain unimplemented.
 
 ## Run the reference builder
 

@@ -21,10 +21,10 @@ const stages = [
     headline: 'The builder packet contains only the contract.',
     description: 'An approved candidate can export behavior-only SPEC.md. A deterministic reference Docker worker can now return a quarantined candidate source file from one supported synthetic rule. General independent AI builders are still planned.',
     proof: 'SPEC.md only · no evidence artifacts · OS isolation still planned' },
-  { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'ROADMAP',
+  { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'PARTIAL / REFERENCE',
     headline: 'Try to prove the implementation wrong.',
-    description: 'The planned verification runner will bind tests to a code snapshot, check required behaviors and deliberately injected faults, and treat unknowns as blockers.',
-    proof: 'Acceptance tests · genuine code mutations · fresh test receipts' },
+    description: 'A separate pinned Docker verifier now checks one synthetic search contract with seven acceptance checks and three source-derived faulty mutants. General coverage and hostile-code security are not yet solved.',
+    proof: 'Pinned synthetic suite · AST-derived mutations · bound verifier receipt' },
   { number: '06', name: 'Release', eyebrow: 'ANTI-M GOVERNANCE', status: 'ROADMAP',
     headline: 'A green test is not permission to ship.',
     description: 'Anti-M will require validated completion evidence, a bounded repair history, and explicit human release approval before marking the work DONE.',
@@ -211,7 +211,7 @@ function Roadmap() {
           <div className="capability-bottom"><span>{idx <= 5 ? 'AVAILABLE / LIMITED' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge, Docker isolation checks and a synthetic reference builder are testable in Python. General AI builders, real mutation testing and Anti-M release signing remain future work.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge, Docker isolation checks and a synthetic reference builder are testable in Python. General AI builders and broad verification coverage remain future work; synthetic acceptance and real source-derived mutations now exist, while Anti-M release signing remains unimplemented.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
