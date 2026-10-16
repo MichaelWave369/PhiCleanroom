@@ -5,9 +5,9 @@ import LocalInspector from './LocalInspector.jsx'
 const REPO = 'https://github.com/MichaelWave369/PhiCleanroom'
 
 const stages = [
-  { number: '01', name: 'Observe', eyebrow: 'INVESTIGATOR', status: 'CURRENT / MANUAL',
+  { number: '01', name: 'Observe', eyebrow: 'INVESTIGATOR', status: 'CURRENT / OFFLINE CLI',
     headline: 'Investigate behavior, not implementation.',
-    description: 'Start with an owned or authorized target. Record what a feature does, which environment produced the result, and what evidence actually demonstrates the rule.',
+    description: 'Start with an owned or authorized target. The structured-offline Investigator turns curated observations into v2 candidates stamped OBSERVED, never VERIFIED. Automated reverse engineering is not yet connected.',
     proof: 'Authorized scope · observation notes · pinned snapshot manifest' },
   { number: '02', name: 'Verify', eyebrow: 'EVIDENCE VAULT', status: 'CURRENT / CLI',
     headline: 'Keep the artifact. Check the bytes.',
@@ -15,7 +15,7 @@ const stages = [
     proof: 'Stored artifacts · SHA-256 verification · frozen candidate digest' },
   { number: '03', name: 'Review', eyebrow: 'HUMAN JUDGMENT', status: 'CURRENT / CLI',
     headline: 'Approval is specific, recorded and reversible.',
-    description: 'A reviewer evaluates each rule against the real evidence. Approve, return, or reject. A changed candidate needs a new approval; a later return blocks export.',
+    description: 'The offline Judge returns typed review advice without approval authority. A human reviewer separately inspects the real evidence and records approve, return or reject in the Vault.',
     proof: 'Per-rule decision · hash-linked local ledger · explicit review' },
   { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / CLI',
     headline: 'The builder packet contains only the contract.',
@@ -36,8 +36,8 @@ const capabilityCards = [
   { mark: 'LIVE / CORE', title: 'Review Ledger', desc: 'Per-rule approve, return, and reject events bound to exact candidate digests.', id: 'CAP-02' },
   { mark: 'LIVE / CORE', title: 'Spec-only Export', desc: 'A behavior-only builder packet, with separately stored audit metadata.', id: 'CAP-03' },
   { mark: 'LIVE / BROWSER', title: 'Local Inspector', desc: 'Open v2 manifests and locally hash selected artifacts. No uploads or approvals.', id: 'CAP-04' },
-  { mark: 'NEXT / PLANNED', title: 'Worker Adapters', desc: 'Provider-neutral investigation, judging and building interfaces with controlled access.', id: 'CAP-05' },
-  { mark: 'NEXT / PLANNED', title: 'Isolation & Anti-M', desc: 'Real process isolation, mutation testing and governed human release controls.', id: 'CAP-06' },
+  { mark: 'LIVE / OFFLINE', title: 'Investigator & Judge', desc: 'Structured observation-to-candidate adapter and typed evidence advice. No model APIs or automatic approval.', id: 'CAP-05' },
+  { mark: 'NEXT / PLANNED', title: 'External Agents & Isolation', desc: 'Model adapters, isolated builder execution, mutation tests and Anti-M release governance.', id: 'CAP-06' },
 ]
 
 function ArrowIcon({ diagonal = false, size = 18 }) {
@@ -205,13 +205,13 @@ function Roadmap() {
     <div className="section-shell">
       <SectionHeading id="roadmap" number="05" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
       <div className="capability-grid">
-        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 3 ? 'capability-planned' : '')}>
-          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 3 ? 'is-planned' : '')}>{card.mark}</span></div>
+        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 4 ? 'capability-planned' : '')}>
+          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 4 ? 'is-planned' : '')}>{card.mark}</span></div>
           <h3>{card.title}</h3><p>{card.desc}</p>
-          <div className="capability-bottom"><span>{idx <= 3 ? 'CORE / AVAILABLE' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
+          <div className="capability-bottom"><span>{idx <= 4 ? 'CORE / AVAILABLE' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. The browser inspector checks locally selected file bytes, but cannot approve rules or access your private vault.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator and Judge contracts are now testable in the Python CLI. The browser inspector checks locally selected file bytes; none of these tools can automatically approve or release.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
