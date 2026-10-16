@@ -14,6 +14,7 @@ PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuil
 
 ## What works now
 
+- **Anti-M completion gate v1 (local):** freezes an approved stage, current Vault ledger head, source SHA-256, builder/verifier receipts, 7 checks and 3 mutations into a strict completion contract. A separate opt-in 32-byte-key HMAC attestation records *human-claimed release review*, without deploying or marking DONE. Identity is not authenticated. See [Anti-M Guide](docs/ANTI_M.md).
 - **Evidence Vault v2:** local content-addressed evidence artifacts, a target snapshot file, and hash-verified object contents.
 - **Frozen candidate specifications:** a SHA-256 identifies the exact reviewed rule set and referenced artifacts.
 - **Reviewer decision ledger:** per-rule approve, return, or reject records in a hash-linked append-only-by-the-app event file.
@@ -49,6 +50,14 @@ phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA
 # Execution is opt-in, and writes only an out-of-vault receipt:
 phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --image sha256:YOUR_IMAGE_ID --receipt ./probe-receipt.json --execute --acknowledge-docker-risk
 ```
+
+## Run Anti-M completion review
+
+Anti-M is intentionally **not a releaser**. It can freeze evidence against the current Vault ledger head and require a separate explicit keyed review step, with no automatic DONE. After obtaining a genuine reference builder and independent verifier receipt:
+
+    phicleanroom anti-m contract --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --artifacts ./unverified-output --builder-receipt ./unverified-receipt.json --verifier-receipt ./independent-verification.json --out ./completion-contract.json
+
+See [Anti-M](docs/ANTI_M.md) for re-assessment, local key handling, explicit human review attestation and the limitations of symmetric HMAC.
 
 ## Run the independent reference verifier
 
