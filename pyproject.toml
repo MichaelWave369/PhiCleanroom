@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phicleanroom"
+version = "0.1.0"
+description = "Evidence-gated clean-room behavioral specification exporter"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+phicleanroom = "phicleanroom.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
