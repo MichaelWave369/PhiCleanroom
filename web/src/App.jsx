@@ -17,9 +17,9 @@ const stages = [
     headline: 'Approval is specific, recorded and reversible.',
     description: 'The offline Judge returns typed review advice without approval authority. A human reviewer separately inspects the real evidence and records approve, return or reject in the Vault.',
     proof: 'Per-rule decision · hash-linked local ledger · explicit review' },
-  { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / CLI',
-    headline: 'The builder packet contains only the contract.',
-    description: 'An approved candidate can export a behavior-only SPEC.md. Actual process isolation must be provisioned separately so the builder cannot access the original.',
+  { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / PROBE',
+    headline: 'The builder packet contains only the contract.'
+    description: 'An approved candidate can export behavior-only SPEC.md. A restricted Docker probe now receives only that spec with networking disabled, but a secure autonomous coding worker is not yet implemented.',
     proof: 'SPEC.md only · no evidence artifacts · OS isolation still planned' },
   { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'ROADMAP',
     headline: 'Try to prove the implementation wrong.',
@@ -37,7 +37,7 @@ const capabilityCards = [
   { mark: 'LIVE / CORE', title: 'Spec-only Export', desc: 'A behavior-only builder packet, with separately stored audit metadata.', id: 'CAP-03' },
   { mark: 'LIVE / BROWSER', title: 'Local Inspector', desc: 'Open v2 manifests and locally hash selected artifacts. No uploads or approvals.', id: 'CAP-04' },
   { mark: 'LIVE / OFFLINE', title: 'Investigator & Judge', desc: 'Structured observation-to-candidate adapter and typed evidence advice. No model APIs or automatic approval.', id: 'CAP-05' },
-  { mark: 'NEXT / PLANNED', title: 'External Agents & Isolation', desc: 'Model adapters, isolated builder execution, mutation tests and Anti-M release governance.', id: 'CAP-06' },
+  { mark: 'LIVE / PROBE', title: 'Restricted Spec Isolation', desc: 'Pinned local Docker worker probes a SPEC-only mount with no network, read-only root and no release authority. Not a code builder.', id: 'CAP-06' },
 ]
 
 function ArrowIcon({ diagonal = false, size = 18 }) {
@@ -205,13 +205,13 @@ function Roadmap() {
     <div className="section-shell">
       <SectionHeading id="roadmap" number="05" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
       <div className="capability-grid">
-        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 4 ? 'capability-planned' : '')}>
-          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 4 ? 'is-planned' : '')}>{card.mark}</span></div>
+        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 5 ? 'capability-planned' : '')}>
+          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 5 ? 'is-planned' : '')}>{card.mark}</span></div>
           <h3>{card.title}</h3><p>{card.desc}</p>
-          <div className="capability-bottom"><span>{idx <= 4 ? 'CORE / AVAILABLE' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
+          <div className="capability-bottom"><span>{idx <= 5 ? 'AVAILABLE / LIMITED' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator and Judge contracts are now testable in the Python CLI. The browser inspector checks locally selected file bytes; none of these tools can automatically approve or release.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge and a restricted Docker probe are now testable in the Python CLI. Actual autonomous builders, code mutation verification and Anti-M release signing remain future work.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
