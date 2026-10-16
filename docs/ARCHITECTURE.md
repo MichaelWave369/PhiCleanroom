@@ -9,7 +9,7 @@
 5. **Docker probe (implemented, limited)**: Explicit opt-in launches a prebuilt, SHA-256-pinned reference image with only a fresh approved SPEC.md bound read-only, no network or host output mount, read-only root and Linux capability limits. The probe reports narrow boundary checks, not a security attestation.
 6. **Independent builder (future)**: Operate in a separately governed execution environment with only SPEC.md and a validated artifact output path. A probed Docker container is not yet an independent coding worker.
 7. **Independent reference verifier (implemented, limited)**: A separate trusted Docker worker runs seven fixed synthetic acceptance checks against the current quarantined source plus three AST-derived mutated versions of that source. The host checks exact source/spec/stage digests, stale builder receipts, assertion-killed mutants and bounded metadata-only results. Arbitrary specifications, comprehensive acceptance suites and hardened adversarial execution remain future work.
-8. **Anti-M (future)**: Require a test-to-commit binding, passing mandatory tests, detected mutants, review trace, receipt and human release approval. No agent claims DONE merely because a model says so.
+8. **Anti-M (local review contract implemented, actual release future)**: Freeze approved Vault stage/ledger-head, generated source and builder/verifier receipts, mandatory acceptance cases and mutant results. Human-held-key HMAC records only claimed review intent; it does not authenticate identity, certify a signed commit, mark DONE or deploy.
 
 ## Trust boundaries
 
@@ -48,7 +48,8 @@ Record classes are OBSERVED, VERIFIED, INFERRED, DREAMED, SIMULATED, UNKNOWN. On
 - **M3, merged:** versioned provider-neutral Investigator/Judge protocols, offline structured investigator, deterministic advisory judge and CLI.
 - **M4, this PR:** restricted Docker **probe only**, with a verified approved SPEC-only input, no network, read-only root and minimal container privileges, plus a synthetic real-Docker CI smoke test. Not a full coding worker or isolated hostile-code guarantee.
 - **M4b, merged reference:** isolated deterministic builder with bounded generated source and quarantine artifacts (PR #8). General provider-based code generation remains future work.
-- **M5, this PR:** independent reference verifier with 7 fixed acceptance checks, 3 AST-based source mutations, separately pinned Docker image and source/stage/spec/receipt binding. Hardened arbitrary-code verification, complete coverage and Anti-M release gates remain future milestones.
+- **M5, merged:** independent reference verifier with 7 fixed acceptance checks, 3 AST source mutations, pinned Docker image and source/stage/spec/receipt binding.
+- **M6, this PR:** Anti-M strict completion contract, current ledger-head binding, recheckable eligibility, explicit HMAC-based local review attestation and negative tests for stale/tampered evidence. Real reviewer authentication, signed Git release, deployment and DONE remain future milestones.
 - **M5:** real mutation runner, test snapshot pinning, Anti-M DONE contract and human release signing.
 
 No external provider is required by core. No third-party implementation or code is copied into the project.
