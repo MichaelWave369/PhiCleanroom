@@ -54,7 +54,7 @@ def main(image: str) -> None:
         # Test the example output *separately* in this CI-only synthetic fixture.
         # Do not import/run unknown output automatically in the builder command.
         process = subprocess.run(
-            [sys.executable, "-I", "-c",
+            [sys.executable, "-B", "-I", "-c",
              "import importlib.util, sys;"
              "p=sys.argv[1];"
              "s=importlib.util.spec_from_file_location('demo',p);"
