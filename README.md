@@ -19,9 +19,20 @@ PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuil
 - **Reviewer decision ledger:** per-rule approve, return, or reject records in a hash-linked append-only-by-the-app event file.
 - **Fail-closed packet:** only the currently approved, staged, hash-verified behavior-only SPEC.md reaches the builder packet.
 - **Audit receipt:** optional, always outside the builder packet, including stage, snapshot, specification and ledger-head hashes.
-- **CI and negative controls:** Python 3.10/3.12/3.13 tests for tampering, missing files, changed candidates, revoked approval, unverified claims, and directory separation.
+- **Provider-neutral Investigator + Judge interfaces:** an offline structured observation adapter creates unapproved v2 candidates; a deterministic advisory judge returns typed return/human-review decisions based on provenance claims and optional local Vault integrity checks. Neither can approve, build, or ship.
+- **CI and negative controls:** Python 3.10/3.12/3.13 tests for tampering, missing files, changed candidates, revoked approval, unverified claims, malformed judge responses and directory separation.
 
-**Important limitations:** reviewer names are *not authenticated*, the snapshot is an investigator-supplied manifest rather than a verified live binary, and an attacker who can rewrite the whole ledger could recompute it without an externally saved ledger-head hash. The builder packet directory is not an OS-level sandbox. Actual isolated agent sessions, integrated investigator adapters, mutation tests, and Anti-M release signatures are future work.
+**Important limitations:** reviewer names are *not authenticated*, the snapshot is an investigator-supplied manifest rather than a verified live binary, and an attacker who can rewrite the whole ledger could recompute it without an externally saved ledger-head hash. The builder packet directory is not an OS-level sandbox. Actual isolated agent sessions, external-model investigator/judge integration, automated reverse engineering, mutation tests, and Anti-M release signatures are future work.
+
+## Use the local role interfaces
+
+The first Investigator and Judge contracts are deterministic, offline and provider-neutral. They do **not** connect REA, Jev or a cloud model, and a Judge decision is never an approval. See [Agent Interfaces](docs/AGENT_INTERFACES.md) for the observation-bundle schema and full CLI sequence.
+
+```bash
+phicleanroom agents providers
+phicleanroom agents investigate --input ./observations.json --out ./candidate.json
+phicleanroom agents judge --input ./candidate.json --vault ./local-evidence-vault --out ./advice.json
+```
 
 ## Try the gate
 
@@ -58,7 +69,7 @@ Authorized observation -> Evidence record -> Human review -> Gate
                                               Anti-M / human release approval
 ```
 
-Implemented today: investigator-supplied artifacts -> local hash verification -> frozen candidate -> per-rule reviewer decisions -> behavior-only SPEC.md + optional separate receipt. Fresh-builder process isolation, reviewer identity verification, and Anti-M completion remain future stages.
+Implemented today: curated observations -> unapproved candidate -> local artifact inventory + typed advisory check -> human Vault review -> behavior-only SPEC.md + optional separate receipt. Fresh-builder process isolation, reviewer identity verification, and Anti-M completion remain future stages.
 
 For the vault command sequence, see [docs/VAULT.md](docs/VAULT.md). Also see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/SCHEMA.md](docs/SCHEMA.md).
 
