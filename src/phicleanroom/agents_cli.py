@@ -50,17 +50,8 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 inventory = None
             report = agents.judge_provider(opts.adapter).assess(candidate, inventory)
-            # A judge is a classifier; never allow provider output with 'approve' semantics.
-            if not isinstance(report, dict) or report.get("authority") != "NONE" or report.get("kind") != "ADVISORY_ONLY":
-                raise agents.AgentContractError("judge output must be explicitly nonauthoritative")
-            if report.get("decision") not in ("NEEDS_HUMAN_REVIEW", "RETURN_FOR_EVIDENCE"):
-                raise agents.AgentContractError("judge decision is not an allowed advisory state")
-            rules = report.get("rules")
-            if not isinstance(rules, list) or len(rules) != len(candidate["rules"]):
-                raise agents.AgentContractError("judge output is missing per-rule decisions")
-            for rule, decision in zip(candidate["rules"], rules):
-                if not isinstance(decision, dict) or decision.get("rule_id") != rule["id"] or decision.get("decision") not in ("NEEDS_HUMAN_REVIEW", "RETURN_FOR_EVIDENCE"):
-                    raise agents.AgentContractError("judge output contains an invalid rule decision")
+            # A provider may advise but cannot invent approval, rules or a candidate hash.
+            agents.validate_judge_report(candidate, report)
             agents.save_new_json(opts.out, report)
             print("ADVISORY CREATED: " + str(opts.out))
             print("DECISION: " + report["decision"])
