@@ -103,7 +103,7 @@ test('local input parsing actually hashes raw bytes, rejects malformed and dupli
   await assert.rejects(readSlot('contract',malformed,webcrypto.subtle),/Duplicate JSON/)
   const nested=file('{"x":{"a":1,"a":2}}')
   await assert.rejects(readSlot('contract',nested,webcrypto.subtle),/Duplicate JSON/)
-  assert.throws(()=>rejectDuplicateNames('{"a":"escaped \\" quote","b":2}'),undefined)
+  assert.doesNotThrow(()=>rejectDuplicateNames('{"a":"escaped \\" quote","b":2}'))
 })
 
 test('local source is only hashed and never parsed/executed',async()=>{
