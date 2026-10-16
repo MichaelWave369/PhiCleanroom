@@ -146,6 +146,8 @@ def _evidence(root: Path, stage: str, artifacts: Path, builder_receipt: Path,
         != (stage, spec_sha, source_sha)):
         raise CompletionError("verifier receipt is not bound to current source, spec and stage")
     sandbox._image(checked["verifier_image_id"])
+    if built["image_id"] == checked["verifier_image_id"]:
+        raise CompletionError("builder and verifier must use different pinned worker images")
     if not isinstance(checked["note"], str):
         raise CompletionError("invalid verifier receipt note")
     # Reconstruct only the verifier worker's strict result envelope and check
@@ -282,6 +284,9 @@ def attest(root: Path, artifacts: Path, built: Path, verified: Path,
 
 def verify_attestation(root: Path, artifacts: Path, built: Path, verified: Path,
                        contract: Path, key_file: Path, attestation: Path) -> dict[str, Any]:
+    for path in (key_file, contract, attestation):
+        if not _not_within(path, root) or not _not_within(path, artifacts):
+            raise CompletionError("attestation, contract and key must remain outside Vault and quarantine")
     ready = assess(root, artifacts, built, verified, contract)
     payload, attestation_hash = _safe_json(attestation)
     _keys(payload, {"schema_version", "kind", "contract_sha256", "claimed_signer",
