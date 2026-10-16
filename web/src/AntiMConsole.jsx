@@ -35,8 +35,9 @@ export default function AntiMConsole(){
     const request=++token.current
     setSynthetic(false)
     setBusy(true)
-    setErrors(previous=>({...previous,[slot]:null}))
-    setFiles(current=>({...current,[slot]:null}))
+    setErrors(previous=>synthetic?{}:{...previous,[slot]:null})
+    // Never silently combine fabricated demo records with a user's real files.
+    setFiles(current=>synthetic?empty():{...current,[slot]:null})
     try{
       const result=await readSlot(slot,file)
       if(request!==token.current)return
