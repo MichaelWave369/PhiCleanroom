@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { CONTROL_FIELDS, INITIAL_CHECKS, evaluateDemo } from './demoGate.js'
 
 const REPO = 'https://github.com/MichaelWave369/PhiCleanroom'
