@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.coverage
+.pytest_cache/
+# Generated investigation and builder contents are deliberately not versioned.
+runs/
+artifacts/
+builder-packet/
+audit-receipts/

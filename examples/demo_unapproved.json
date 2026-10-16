@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "feature": "Synthetic search demonstration, not a real investigation",
+  "authorization": {
+    "scope": "Synthetic local test application",
+    "basis": "Created for a demonstration only",
+    "approved_by": "demo"
+  },
+  "rules": [
+    {
+      "id": "R1",
+      "behavior": "When a user searches for a title word, the matching item appears.",
+      "evidence": [
+        {
+          "id": "E1",
+          "kind": "observation",
+          "provenance": "SIMULATED",
+          "summary": "Illustrative record, not real verified evidence",
+          "reference": "examples/demo_unapproved.json",
+          "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "reviewer": "demo",
+        "reviewed_at": "2026-10-16T08:00:00-07:00"
+      }
+    }
+  ]
+}
