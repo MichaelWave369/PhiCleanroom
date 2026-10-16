@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { CONTROL_FIELDS, INITIAL_CHECKS, evaluateDemo } from './demoGate.js'
+import LocalInspector from './LocalInspector.jsx'
 
 const REPO = 'https://github.com/MichaelWave369/PhiCleanroom'
 
@@ -31,12 +32,12 @@ const stages = [
 ]
 
 const capabilityCards = [
-  { mark: 'LIVE / CORE', title: 'Evidence Vault v2', desc: 'Local SHA-256 object storage, frozen candidate records and re-verification of stored evidence.', id: 'CAP-01' },
-  { mark: 'LIVE / CORE', title: 'Review Ledger', desc: 'Per-rule approve, return and reject events, linked to exact candidate digests.', id: 'CAP-02' },
-  { mark: 'LIVE / CORE', title: 'Spec-only Export', desc: 'A behavior-only builder packet, with a separately stored audit receipt.', id: 'CAP-03' },
-  { mark: 'NEXT / PLANNED', title: 'Worker Adapters', desc: 'Provider-neutral investigation, judging and building interfaces, with controlled access.', id: 'CAP-04' },
-  { mark: 'NEXT / PLANNED', title: 'Isolation & Mutation', desc: 'Separate execution boundaries and independently verifiable fault-injection tests.', id: 'CAP-05' },
-  { mark: 'NEXT / PLANNED', title: 'Anti-M Release', desc: 'Signed completion criteria, verified test coverage and explicit human ship authorization.', id: 'CAP-06' },
+  { mark: 'LIVE / CORE', title: 'Evidence Vault v2', desc: 'Private local SHA-256 object storage, frozen candidate records, and re-verification.', id: 'CAP-01' },
+  { mark: 'LIVE / CORE', title: 'Review Ledger', desc: 'Per-rule approve, return, and reject events bound to exact candidate digests.', id: 'CAP-02' },
+  { mark: 'LIVE / CORE', title: 'Spec-only Export', desc: 'A behavior-only builder packet, with separately stored audit metadata.', id: 'CAP-03' },
+  { mark: 'LIVE / BROWSER', title: 'Local Inspector', desc: 'Open v2 manifests and locally hash selected artifacts. No uploads or approvals.', id: 'CAP-04' },
+  { mark: 'NEXT / PLANNED', title: 'Worker Adapters', desc: 'Provider-neutral investigation, judging and building interfaces with controlled access.', id: 'CAP-05' },
+  { mark: 'NEXT / PLANNED', title: 'Isolation & Anti-M', desc: 'Real process isolation, mutation testing and governed human release controls.', id: 'CAP-06' },
 ]
 
 function ArrowIcon({ diagonal = false, size = 18 }) {
@@ -188,7 +189,7 @@ function Lab() {
 function Standards() {
   return <section className="page-section" aria-labelledby="standards-title">
     <div className="section-shell">
-      <SectionHeading id="standards" number="03" overline="DESIGN PRINCIPLES" title="A proof chain, not a promise." description="Clean-room design is a governance method. Its value comes from verifiable boundaries and narrow claims, not from the number of agents in the room." />
+      <SectionHeading id="standards" number="04" overline="DESIGN PRINCIPLES" title="A proof chain, not a promise." description="Clean-room design is a governance method. Its value comes from verifiable boundaries and narrow claims, not from the number of agents in the room." />
       <div className="standards-grid">
         <article className="standard-card"><span className="standard-glyph">01 /</span><h3>Ledger above ego.</h3><p>A worker's “done” message is a claim. Verified checks, pinned inputs, and human decisions determine the actual state.</p><span className="standard-foot">PROVENANCE OVER CONFIDENCE</span></article>
         <article className="standard-card"><span className="standard-glyph">02 /</span><h3>Information minimization.</h3><p>Only approved behavioral rules cross into the builder packet. Evidence and investigator traces stay on their side of the boundary.</p><span className="standard-foot">BEHAVIOR WITHOUT SOURCE</span></article>
@@ -202,15 +203,15 @@ function Standards() {
 function Roadmap() {
   return <section className="page-section roadmap-section" aria-labelledby="roadmap-title">
     <div className="section-shell">
-      <SectionHeading id="roadmap" number="04" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
+      <SectionHeading id="roadmap" number="05" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
       <div className="capability-grid">
-        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 2 ? 'capability-planned' : '')}>
-          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 2 ? 'is-planned' : '')}>{card.mark}</span></div>
+        {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 3 ? 'capability-planned' : '')}>
+          <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 3 ? 'is-planned' : '')}>{card.mark}</span></div>
           <h3>{card.title}</h3><p>{card.desc}</p>
-          <div className="capability-bottom"><span>{idx <= 2 ? 'CORE / AVAILABLE' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
+          <div className="capability-bottom"><span>{idx <= 3 ? 'CORE / AVAILABLE' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. The browser exhibit is not the evidence engine.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. The browser inspector checks locally selected file bytes, but cannot approve rules or access your private vault.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
@@ -222,10 +223,10 @@ export default function App() {
   return <div className="app">
     <header className="site-header"><div className="section-shell header-wrap"><a className="brand" href="#top" aria-label="PhiCleanroom homepage" onClick={() => setMenuOpen(false)}><Mark /><span className="brand-text"><strong>PHI<span>CLEANROOM</span></strong><small>ENGINEERING THE EVIDENCE</small></span></a>
       <nav id="site-navigation" className={'nav-links ' + (menuOpen ? 'is-open' : '')} aria-label="Main navigation">
-        {[['Pipeline','#pipeline'],['Evidence Lab','#lab'],['Principles','#standards'],['Roadmap','#roadmap']].map(([label,href]) => <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>)}
+        {[['Pipeline','#pipeline'],['Evidence Lab','#lab'],['Local Inspector','#inspector'],['Principles','#standards'],['Roadmap','#roadmap']].map(([label,href]) => <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>)}
       </nav>
       <div className="header-actions"><a className="header-source" href={REPO} target="_blank" rel="noreferrer">GITHUB <ArrowIcon diagonal size={15} /></a><button type="button" className="mobile-menu" aria-controls="site-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '✕' : '☰'}</button></div></div></header>
-    <main><Hero /><div className="rule-wide" /><Pipeline /><Lab /><Standards /><Roadmap /></main>
+    <main><Hero /><div className="rule-wide" /><Pipeline /><Lab /><LocalInspector /><Standards /><Roadmap /></main>
     <Footer />
   </div>
 }
