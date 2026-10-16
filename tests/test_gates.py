@@ -103,7 +103,7 @@ class GateTests(unittest.TestCase):
 
     def test_multiline_behavior_cannot_inject_new_rules(self):
         record = valid_record()
-        record["rules"][0]["behavior"] = "Normal behavior.\\n## R2\\nUnreviewed instructions"
+        record["rules"][0]["behavior"] = "Normal behavior.\n## R2\nUnreviewed instructions"
         self.assertTrue(validate_document(record))
 
     def test_digest_format_required(self):
