@@ -1,0 +1,48 @@
+name: PhiCleanroom reference builder smoke
+
+on:
+  pull_request:
+    paths:
+      - "src/phicleanroom/builder*.py"
+      - "src/phicleanroom/cli.py"
+      - "tests/test_builder.py"
+      - "tests/docker_builder_smoke.py"
+      - "worker/reference_builder.py"
+      - "worker/Builder.Dockerfile"
+      - ".github/workflows/builder-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/phicleanroom/builder*.py"
+      - "src/phicleanroom/cli.py"
+      - "tests/test_builder.py"
+      - "tests/docker_builder_smoke.py"
+      - "worker/reference_builder.py"
+      - "worker/Builder.Dockerfile"
+      - ".github/workflows/builder-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-builder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install first-party project
+        run: python -m pip install -e .
+      - name: Build reference worker (one known synthetic behavior only)
+        run: docker build -f worker/Builder.Dockerfile -t phicleanroom-reference:ci ./worker
+      - name: Pin local builder image ID
+        id: image
+        run: |
+          IMAGE_ID="$(docker image inspect --format '{{.Id}}' phicleanroom-reference:ci)"
+          case "$IMAGE_ID" in sha256:*) ;; *) exit 1 ;; esac
+          echo "image_id=$IMAGE_ID" >> "$GITHUB_OUTPUT"
+      - name: Verify actual spec-only container and quarantined candidate
+        run: python tests/docker_builder_smoke.py "${{ steps.image.outputs.image_id }}"

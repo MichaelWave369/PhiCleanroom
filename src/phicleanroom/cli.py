@@ -29,6 +29,9 @@ def main(argv: list[str] | None = None) -> int:
     if argv and argv[0] == "sandbox":
         from .sandbox_cli import main as sandbox_main
         return sandbox_main(argv[1:])
+    if argv and argv[0] == "builder":
+        from .builder_cli import main as builder_main
+        return builder_main(argv[1:])
     parser = argparse.ArgumentParser(prog="phicleanroom")
     sub = parser.add_subparsers(dest="command", required=True)
     check = sub.add_parser("check", help="Validate the reviewed evidence gate")

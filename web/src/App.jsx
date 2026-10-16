@@ -17,9 +17,9 @@ const stages = [
     headline: 'Approval is specific, recorded and reversible.',
     description: 'The offline Judge returns typed review advice without approval authority. A human reviewer separately inspects the real evidence and records approve, return or reject in the Vault.',
     proof: 'Per-rule decision · hash-linked local ledger · explicit review' },
-  { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / PROBE',
+  { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / REFERENCE',
     headline: 'The builder packet contains only the contract.',
-    description: 'An approved candidate can export behavior-only SPEC.md. A restricted Docker probe now receives only that spec with networking disabled, but a secure autonomous coding worker is not yet implemented.',
+    description: 'An approved candidate can export behavior-only SPEC.md. A deterministic reference Docker worker can now return a quarantined candidate source file from one supported synthetic rule. General independent AI builders are still planned.',
     proof: 'SPEC.md only · no evidence artifacts · OS isolation still planned' },
   { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'ROADMAP',
     headline: 'Try to prove the implementation wrong.',
@@ -37,7 +37,7 @@ const capabilityCards = [
   { mark: 'LIVE / CORE', title: 'Spec-only Export', desc: 'A behavior-only builder packet, with separately stored audit metadata.', id: 'CAP-03' },
   { mark: 'LIVE / BROWSER', title: 'Local Inspector', desc: 'Open v2 manifests and locally hash selected artifacts. No uploads or approvals.', id: 'CAP-04' },
   { mark: 'LIVE / OFFLINE', title: 'Investigator & Judge', desc: 'Structured observation-to-candidate adapter and typed evidence advice. No model APIs or automatic approval.', id: 'CAP-05' },
-  { mark: 'LIVE / PROBE', title: 'Restricted Spec Isolation', desc: 'Pinned local Docker worker probes a SPEC-only mount with no network, read-only root and no release authority. Not a code builder.', id: 'CAP-06' },
+  { mark: 'LIVE / DEMO', title: 'Independent Reference Builder', desc: 'Pinned Docker worker reads approved SPEC.md and returns one unverified demo source file. No general AI builder or release.', id: 'CAP-06' },
 ]
 
 function ArrowIcon({ diagonal = false, size = 18 }) {
@@ -211,7 +211,7 @@ function Roadmap() {
           <div className="capability-bottom"><span>{idx <= 5 ? 'AVAILABLE / LIMITED' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge and a restricted Docker probe are now testable in the Python CLI. Actual autonomous builders, code mutation verification and Anti-M release signing remain future work.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge, Docker isolation checks and a synthetic reference builder are testable in Python. General AI builders, real mutation testing and Anti-M release signing remain future work.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
