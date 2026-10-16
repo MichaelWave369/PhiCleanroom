@@ -25,6 +25,10 @@ def _string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def _single_line(value: Any) -> bool:
+    return _string(value) and "\\n" not in value and "\\r" not in value
+
+
 def _timestamp(value: Any) -> bool:
     if not _string(value):
         return False
@@ -53,8 +57,8 @@ def validate_document(doc: Any) -> list[str]:
     _keys(doc, {"schema_version", "feature", "authorization", "rules"}, "document", errors)
     if type(doc.get("schema_version")) is not int or doc["schema_version"] != VERSION:
         errors.append("schema_version must be integer 1")
-    if not _string(doc.get("feature")):
-        errors.append("feature must be nonempty text")
+    if not _single_line(doc.get("feature")) or len(doc["feature"]) > 160:
+        errors.append("feature must be single-line text of 1-160 characters")
 
     auth = doc.get("authorization")
     if not isinstance(auth, dict):
@@ -85,8 +89,8 @@ def validate_document(doc: Any) -> list[str]:
         else:
             seen_rules.add(rule_id)
         behavior = rule.get("behavior")
-        if not _string(behavior) or len(behavior) > 2000:
-            errors.append(f"{loc}.behavior must be 1-2000 characters of behavior")
+        if not _single_line(behavior) or len(behavior) > 2000:
+            errors.append(f"{loc}.behavior must be 1-2000 characters of single-line behavior")
         elif "```" in behavior:
             errors.append(f"{loc}.behavior cannot contain fenced code")
         evidence = rule.get("evidence")
@@ -114,7 +118,7 @@ def validate_document(doc: Any) -> list[str]:
                 if record.get("kind") not in ALLOWED_KINDS:
                     errors.append(f"{at}.kind must be observation or test")
                 provenance = record.get("provenance")
-                if provenance not in PROVENANCE:
+                if not isinstance(provenance, str) or provenance not in PROVENANCE:
                     errors.append(f"{at}.provenance is not a recognized NBG category")
                 elif provenance != "VERIFIED":
                     errors.append(f"{at}.provenance {provenance} cannot clear the gate")
