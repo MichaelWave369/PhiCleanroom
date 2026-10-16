@@ -4,11 +4,11 @@
 
 ## Public React website
 
-The project includes a responsive React/Vite GitHub Pages website in [web/](web/), with a pipeline explorer, clearly labeled evidence-gate simulation, implementation status, and links to the working Python CLI.
+The project includes a responsive React/Vite GitHub Pages website in [web/](web/), with a pipeline explorer, clearly labeled evidence-gate simulation, a browser-local v2 candidate inspector with SHA-256 file matching, implementation status, and links to the working Python CLI.
 
 **Expected URL after Pages is configured and deployed:** https://michaelwave369.github.io/PhiCleanroom/
 
-See [website setup and deployment](docs/WEBSITE.md) for required owner-side **Settings > Pages > GitHub Actions** configuration. This site is an informational exhibit, not the local vault or a secure builder process.
+See [website setup and deployment](docs/WEBSITE.md) for required owner-side **Settings > Pages > GitHub Actions** configuration. The [browser inspector](docs/BROWSER_INSPECTOR.md) reads user-selected v2 manifests and files entirely in client memory, without uploads. This site is **not** the private Python vault, an authenticated approval service, or a secure builder process.
 
 PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuilding observable software features from reviewed behavioral specifications. The investigator, evidence reviewer, isolated builder, tester, and release approver have distinct responsibilities.
 
