@@ -149,6 +149,15 @@ class EvidenceVaultTests(unittest.TestCase):
         with self.assertRaises(vault.VaultError):
             vault.review(self.store, stage, "R1", "return", "reviewer", "")
 
+    def test_expected_head_detects_new_events(self):
+        stage = vault.stage(self.store, self.candidate)
+        trusted = vault.verify_history(self.store)[-1]["event_hash"]
+        self.assertEqual(main(["vault", "--vault", str(self.store), "verify",
+                               "--expected-head", trusted]), 0)
+        vault.review(self.store, stage, "R1", "return", "reviewer", "not yet")
+        self.assertEqual(main(["vault", "--vault", str(self.store), "verify",
+                               "--expected-head", trusted]), 1)
+
     def test_cli_roundtrip(self):
         candidate_path = self.root / "candidate.json"
         candidate_path.write_text(json.dumps(self.candidate))
