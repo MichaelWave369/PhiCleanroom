@@ -25,10 +25,10 @@ const stages = [
     headline: 'Try to prove the implementation wrong.',
     description: 'A separate pinned Docker verifier now checks one synthetic search contract with seven acceptance checks and three source-derived faulty mutants. General coverage and hostile-code security are not yet solved.',
     proof: 'Pinned synthetic suite · AST-derived mutations · bound verifier receipt' },
-  { number: '06', name: 'Release', eyebrow: 'ANTI-M GOVERNANCE', status: 'ROADMAP',
+  { number: '06', name: 'Release', eyebrow: 'ANTI-M GOVERNANCE', status: 'PARTIAL / LOCAL CLI',
     headline: 'A green test is not permission to ship.',
-    description: 'Anti-M will require validated completion evidence, a bounded repair history, and explicit human release approval before marking the work DONE.',
-    proof: 'Traceable completion · human sign-off · auditable release receipt' },
+    description: 'Anti-M now freezes a contract binding the Vault stage, ledger head, source and test receipts. An explicit local-key attestation can record human-claimed release review. Neither step deploys, authenticates a signer or declares DONE.',
+    proof: 'Frozen evidence · manual keyed attestation · no auto-release' },
 ]
 
 const capabilityCards = [
@@ -211,7 +211,7 @@ function Roadmap() {
           <div className="capability-bottom"><span>{idx <= 5 ? 'AVAILABLE / LIMITED' : 'ROADMAP / UNBUILT'}</span><ArrowIcon diagonal size={15} /></div>
         </article>)}
       </div>
-      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge, Docker isolation checks and a synthetic reference builder are testable in Python. General AI builders and broad verification coverage remain future work; synthetic acceptance and real source-derived mutations now exist, while Anti-M release signing remains unimplemented.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
+      <div className="roadmap-actions"><div><span className="mono-mini">OPEN THE SOURCE</span><h3>Inspect the system yourself.</h3><p>Python library, unit tests, CLI docs and GitHub Actions history are public. Offline Investigator/Judge, Docker isolation checks and a synthetic reference builder are testable in Python. General AI builders and broad verification coverage remain future work. Anti-M now has a local completion contract and keyed review attestation, but authenticated signer identity, signed release authority and deployment remain future work.</p></div><div className="roadmap-links"><a className="button button-primary" target="_blank" rel="noreferrer" href={REPO}>Repository <ArrowIcon diagonal /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/VAULT.md'}>Vault guide <ArrowIcon diagonal size={16} /></a><a className="button button-quiet" target="_blank" rel="noreferrer" href={REPO + '/blob/main/docs/ISOLATION.md'}>Isolation guide <ArrowIcon diagonal size={16} /></a></div></div>
     </div>
   </section>
 }
