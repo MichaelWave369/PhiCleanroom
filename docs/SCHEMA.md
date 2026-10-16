@@ -1,4 +1,12 @@
-# Reviewed spec JSON v1
+# Specification schemas: v1 and v2
+
+**v2 is the recommended Evidence Vault workflow.** See [VAULT.md](VAULT.md) for its exact candidate schema, artifact requirements, stage digest, preview, reviewer decisions, and verified packet export.
+
+**v1 is legacy metadata-only and does not verify artifact bytes.** Its packet export requires the explicit `--legacy-unverified` flag and should not be used for real clean-room approval.
+
+---
+
+# Legacy reviewed spec JSON v1
 
 The input is intentionally strict: unknown keys are rejected to reduce accidental transmission of original material. Rejection is not a substitute for a reviewer checking the text for source-derived expression.
 

@@ -4,15 +4,16 @@
 
 PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuilding observable software features from reviewed behavioral specifications. The investigator, evidence reviewer, isolated builder, tester, and release approver have distinct responsibilities.
 
-## What PR #1 delivers
+## What works now
 
-- A local, standard-library **evidence/approval gate** with explicit statuses.
-- A **builder-packet exporter** that produces a directory containing **only `SPEC.md`**.
-- A separate optional audit receipt containing evidence digests and review metadata.
-- Automated tests, including three negative controls for incomplete or unapproved claims.
-- No model APIs, third-party RE tooling, or external services required.
+- **Evidence Vault v2:** local content-addressed evidence artifacts, a target snapshot file, and hash-verified object contents.
+- **Frozen candidate specifications:** a SHA-256 identifies the exact reviewed rule set and referenced artifacts.
+- **Reviewer decision ledger:** per-rule approve, return, or reject records in a hash-linked append-only-by-the-app event file.
+- **Fail-closed packet:** only the currently approved, staged, hash-verified behavior-only SPEC.md reaches the builder packet.
+- **Audit receipt:** optional, always outside the builder packet, including stage, snapshot, specification and ledger-head hashes.
+- **CI and negative controls:** Python 3.10/3.12/3.13 tests for tampering, missing files, changed candidates, revoked approval, unverified claims, and directory separation.
 
-This first release does **not** launch a sandboxed builder, reverse engineer an app, integrate REA/Jev/Opus/Haiku, enforce process-level isolation, perform full mutation testing, or authorize shipping. Those are future milestones, not promises disguised as green checkmarks.
+**Important limitations:** reviewer names are *not authenticated*, the snapshot is an investigator-supplied manifest rather than a verified live binary, and an attacker who can rewrite the whole ledger could recompute it without an externally saved ledger-head hash. The builder packet directory is not an OS-level sandbox. Actual isolated agent sessions, integrated investigator adapters, mutation tests, and Anti-M release signatures are future work.
 
 ## Try the gate
 
@@ -25,12 +26,13 @@ python -m unittest discover -s tests -v
 # Intentionally unapproved sample; must fail closed.
 phicleanroom check --input examples/demo_unapproved.json
 
-# For an authorized feature: create your own evidence-backed JSON and obtain review.
-phicleanroom check --input path/to/reviewed.json
-phicleanroom packet --input path/to/reviewed.json --out /tmp/fresh-builder-packet --receipt /tmp/phi-audit.json
+# Legacy v1 metadata-only checks remain available, but cannot silently export.
+phicleanroom check --input path/to/legacy-reviewed.json
+# Legacy packet only for demonstrations, with explicit unsafe opt-in:
+phicleanroom packet --input path/to/legacy-reviewed.json --out /tmp/legacy-demo --legacy-unverified
 ```
 
-`packet` refuses **any** incomplete, unsupported, unapproved, malformed, or ambiguously authorized requirement. It never copies REA output, source files, artifacts, provenance records, or reviewer notes into the builder packet. The file's text is still human-authored and **must be checked for sensitive or source-derived material** before approval.
+The **v2** vault packet refuses incomplete approval, tampered evidence, missing snapshots, missing artifacts, malformed candidates, and unknown stages. The v1 command is deliberately marked as unsafe compatibility behavior. It never copies REA output, source files, artifacts, provenance records, or reviewer notes into the builder packet. The file's text is still human-authored and **must be checked for sensitive or source-derived material** before approval.
 
 The builder must run in a **separately provisioned session/environment** with no access to the investigated software or investigator logs; directory separation by itself is **not** a security boundary.
 
@@ -48,9 +50,9 @@ Authorized observation -> Evidence record -> Human review -> Gate
                                               Anti-M / human release approval
 ```
 
-The only implemented arrows in this PR are **reviewed JSON -> fail-closed gate -> SPEC.md + optional external receipt**.
+Implemented today: investigator-supplied artifacts -> local hash verification -> frozen candidate -> per-rule reviewer decisions -> behavior-only SPEC.md + optional separate receipt. Fresh-builder process isolation, reviewer identity verification, and Anti-M completion remain future stages.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/SCHEMA.md](docs/SCHEMA.md).
+For the vault command sequence, see [docs/VAULT.md](docs/VAULT.md). Also see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/SCHEMA.md](docs/SCHEMA.md).
 
 ## Safety and licensing
 

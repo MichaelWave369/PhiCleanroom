@@ -19,12 +19,17 @@ def _outside(path: Path, directory: Path) -> bool:
 
 
 def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    if argv and argv[0] == "vault":
+        from .vault_cli import main as vault_main
+        return vault_main(argv[1:])
     parser = argparse.ArgumentParser(prog="phicleanroom")
     sub = parser.add_subparsers(dest="command", required=True)
     check = sub.add_parser("check", help="Validate the reviewed evidence gate")
     check.add_argument("--input", required=True, type=Path)
     packet = sub.add_parser("packet", help="Export only SPEC.md to a new builder directory")
     packet.add_argument("--input", required=True, type=Path)
+    packet.add_argument("--legacy-unverified", action="store_true", help="DANGEROUS: export from v1 metadata without verifying artifacts")
     packet.add_argument("--out", required=True, type=Path)
     packet.add_argument("--receipt", type=Path, help="Separate audit JSON, outside builder directory")
     args = parser.parse_args(argv)
@@ -43,6 +48,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ELIGIBLE: {len(doc['rules'])} explicitly approved rules (record claims, not independent proof)")
         return 0
 
+    if not args.legacy_unverified:
+        print("BLOCKED: v1 packet metadata is not verified. Use vault packet; or explicitly pass --legacy-unverified for demo compatibility.", file=sys.stderr)
+        return 1
     directory = args.out.expanduser()
     receipt_path = args.receipt.expanduser() if args.receipt else None
     if not _outside(args.input, directory):

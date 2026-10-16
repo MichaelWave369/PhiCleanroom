@@ -11,3 +11,9 @@ runs/
 artifacts/
 builder-packet/
 audit-receipts/
+
+# Investigator-only evidence vaults and local review artifacts.
+local-evidence-vault/
+evidence-vault/
+review-receipt*.json
+fresh-builder-packet/
