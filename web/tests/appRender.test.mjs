@@ -28,6 +28,9 @@ test('the actual React App renders instead of producing a blank screen', async (
     assert.match(markup, /Evidence Vault v2/)
     assert.match(markup, /PHICLEANROOM \/ GATE EXPLORER/)
     assert.match(markup, /site-navigation/)
+    assert.match(markup, /LOCAL MANIFEST INSPECTOR/)
+    assert.match(markup, /Choose v2 JSON manifest/)
+    assert.match(markup, /NO FILE UPLOADS/)
     assert.ok(markup.length > 10_000, 'expected the full page, not an empty root')
   } finally {
     await vite.close()
