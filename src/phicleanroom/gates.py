@@ -26,7 +26,7 @@ def _string(value: Any) -> bool:
 
 
 def _single_line(value: Any) -> bool:
-    return _string(value) and "\\n" not in value and "\\r" not in value
+    return _string(value) and "\n" not in value and "\r" not in value
 
 
 def _timestamp(value: Any) -> bool:
@@ -115,7 +115,8 @@ def validate_document(doc: Any) -> list[str]:
                     errors.append(f"{at}.id duplicates {evidence_id}")
                 else:
                     seen_evidence.add(evidence_id)
-                if record.get("kind") not in ALLOWED_KINDS:
+                kind = record.get("kind")
+                if not isinstance(kind, str) or kind not in ALLOWED_KINDS:
                     errors.append(f"{at}.kind must be observation or test")
                 provenance = record.get("provenance")
                 if not isinstance(provenance, str) or provenance not in PROVENANCE:
