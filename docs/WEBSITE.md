@@ -4,6 +4,7 @@ The repository includes a standalone, mobile-responsive React/Vite site in web/.
 It is an explanatory front-end **only**. It cannot read the investigator's local
 vault, approve real rules, run REA, or authorize releases. The Evidence Lab section
 uses a pure deterministic simulation implemented in web/src/demoGate.js.
+The **Local Inspector** section is a separate browser-local v2 candidate viewer that computes actual SHA-256 digests for user-selected files; it never approves real rules or communicates with the private vault. See [BROWSER_INSPECTOR.md](BROWSER_INSPECTOR.md).
 
 ## Local development
 
@@ -49,9 +50,11 @@ if the font service is inaccessible.
 ## Security and integrity
 
 - The Evidence Lab demo never sends input to an API. Its switches alter local React state.
+- The Local Inspector reads chosen JSON and artifact files with browser File APIs and Web Crypto, comparing SHA-256 hashes entirely in memory, without uploading files or saving local data.
 - Toggling approval in the demo is **not** a real authenticated human signature.
 - No evidence artifacts, investigation logs, original software, secrets, or local
   Vault contents should be committed to the public repository.
+- A browser digest match is not proof of behavioral correctness or authorization.
 - Actual process-level isolation, builder implementation and code mutation
   runner remain roadmap items. The UI differentiates live CLI functionality
   from planned capabilities.
