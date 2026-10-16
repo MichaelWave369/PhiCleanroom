@@ -125,11 +125,16 @@ def _unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
-def verifier_argv(image: str, packet: Path, name: str, docker: str = "docker") -> list[str]:
+def verifier_argv(image: str, packet: Path, name: str, stage: str, docker: str = "docker") -> list[str]:
+    if not isinstance(stage, str) or sandbox.STAGE_SHA.fullmatch(stage) is None:
+        raise VerifyError("invalid stage metadata")
     cmd = sandbox.docker_argv(image, packet, name, docker)
     if cmd[-1] != "/app/probe.py":
         raise VerifyError("unexpected underlying Docker entrypoint")
     cmd[-1] = "/app/verify_worker.py"
+    cmd[cmd.index("--workdir"):cmd.index("--workdir")] = [
+        "--env", "PHICLEANROOM_STAGE_SHA=" + stage,
+    ]
     return cmd
 
 
@@ -200,7 +205,7 @@ def verify(
         if not execute:
             return response
         name = "phicleanroom-" + secrets.token_hex(8)
-        argv = verifier_argv(image, packet, name, docker)
+        argv = verifier_argv(image, packet, name, stage, docker)
         try:
             completed = runner(argv, capture_output=True, text=True, timeout=timeout, check=False)
         except subprocess.TimeoutExpired as exc:
