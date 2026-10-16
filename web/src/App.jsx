@@ -18,7 +18,7 @@ const stages = [
     description: 'The offline Judge returns typed review advice without approval authority. A human reviewer separately inspects the real evidence and records approve, return or reject in the Vault.',
     proof: 'Per-rule decision · hash-linked local ledger · explicit review' },
   { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / PROBE',
-    headline: 'The builder packet contains only the contract.'
+    headline: 'The builder packet contains only the contract.',
     description: 'An approved candidate can export behavior-only SPEC.md. A restricted Docker probe now receives only that spec with networking disabled, but a secure autonomous coding worker is not yet implemented.',
     proof: 'SPEC.md only · no evidence artifacts · OS isolation still planned' },
   { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'ROADMAP',
