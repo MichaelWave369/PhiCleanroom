@@ -118,10 +118,10 @@ class GateTests(unittest.TestCase):
             destination = root / "fresh-builder"
             audit = root / "review-audit.json"
             source.write_text(json.dumps(valid_record()), encoding="utf-8")
-            self.assertEqual(main(["packet", "--input", str(source), "--out", str(destination), "--receipt", str(audit)]), 0)
+            self.assertEqual(main(["packet", "--input", str(source), "--out", str(destination), "--receipt", str(audit), "--legacy-unverified"]), 0)
             self.assertEqual([p.name for p in destination.iterdir()], ["SPEC.md"])
             self.assertTrue(audit.is_file())
-            self.assertEqual(main(["packet", "--input", str(source), "--out", str(destination)]), 1)
+            self.assertEqual(main(["packet", "--input", str(source), "--out", str(destination), "--legacy-unverified"]), 1)
 
     def test_refuse_receipt_inside_packet(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -130,9 +130,17 @@ class GateTests(unittest.TestCase):
             source.write_text(json.dumps(valid_record()), encoding="utf-8")
             self.assertEqual(main([
                 "packet", "--input", str(source), "--out", str(root / "builder"),
-                "--receipt", str(root / "builder" / "receipt.json"),
+                "--receipt", str(root / "builder" / "receipt.json"), "--legacy-unverified",
             ]), 1)
             self.assertFalse((root / "builder" / "SPEC.md").exists())
+
+    def test_v1_packet_requires_unsafe_opt_in(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "reviewed.json"
+            source.write_text(json.dumps(valid_record()), encoding="utf-8")
+            self.assertEqual(main(["packet", "--input", str(source), "--out", str(root / "builder")]), 1)
+            self.assertFalse((root / "builder").exists())
 
     def test_demo_fails_closed(self):
         sample = Path(__file__).resolve().parents[1] / "examples" / "demo_unapproved.json"
