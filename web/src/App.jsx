@@ -50,7 +50,7 @@ function Mark({ small = false }) {
 function SectionHeading({ id, number, overline, title, description }) {
   return <div className="section-header" id={id}>
     <div className="section-index"><span>{number}</span><span className="section-index-rule" />{overline}</div>
-    <h2>{title}</h2>
+    <h2 id={id + '-title'}>{title}</h2>
     {description && <p>{description}</p>}
   </div>
 }
