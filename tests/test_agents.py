@@ -181,6 +181,36 @@ class AgentInterfaceTests(unittest.TestCase):
         self.assertEqual(main(["agents", "judge", "--input", str(src), "--out", str(report)]), 0)
         self.assertIn("TARGET_SNAPSHOT_UNCHECKED", json.loads(report.read_text())["rules"][0]["reasons"])
 
+    def test_judge_output_schema_blocks_false_authority_or_forged_candidate(self):
+        report = self.judge.assess(self.candidate, None)
+        self.assertEqual(agents.validate_judge_report(self.candidate, report), report)
+        cases = (
+            ("authority", "APPROVED"),
+            ("decision", "APPROVE"),
+            ("candidate_sha256", "f" * 64),
+        )
+        for key, bad_value in cases:
+            with self.subTest(key=key):
+                altered = copy.deepcopy(report)
+                altered[key] = bad_value
+                with self.assertRaises(agents.AgentContractError):
+                    agents.validate_judge_report(self.candidate, altered)
+        extra = copy.deepcopy(report)
+        extra["secret_source"] = "forbidden"
+        with self.assertRaises(agents.AgentContractError):
+            agents.validate_judge_report(self.candidate, extra)
+
+    def test_judge_output_rejects_bad_rule_reasons_and_missing_rows(self):
+        original = self.judge.assess(self.candidate, None)
+        altered = copy.deepcopy(original)
+        altered["rules"][0]["reasons"] = ["TRUST_MY_MODEL"]
+        with self.assertRaises(agents.AgentContractError):
+            agents.validate_judge_report(self.candidate, altered)
+        altered = copy.deepcopy(original)
+        altered["rules"] = []
+        with self.assertRaises(agents.AgentContractError):
+            agents.validate_judge_report(self.candidate, altered)
+
     def test_judge_cannot_generate_approved_status(self):
         proposal = self.judge.assess(self.candidate, agents.verify_inventory(self.vault, self.candidate))
         choices = {row["decision"] for row in proposal["rules"]}
