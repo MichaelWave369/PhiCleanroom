@@ -23,6 +23,9 @@ def main(argv: list[str] | None = None) -> int:
     if argv and argv[0] == "vault":
         from .vault_cli import main as vault_main
         return vault_main(argv[1:])
+    if argv and argv[0] == "agents":
+        from .agents_cli import main as agents_main
+        return agents_main(argv[1:])
     parser = argparse.ArgumentParser(prog="phicleanroom")
     sub = parser.add_subparsers(dest="command", required=True)
     check = sub.add_parser("check", help="Validate the reviewed evidence gate")
