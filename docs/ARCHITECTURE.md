@@ -11,6 +11,8 @@
 7. **Independent reference verifier (implemented, limited)**: A separate trusted Docker worker runs seven fixed synthetic acceptance checks against the current quarantined source plus three AST-derived mutated versions of that source. The host checks exact source/spec/stage digests, stale builder receipts, assertion-killed mutants and bounded metadata-only results. Arbitrary specifications, comprehensive acceptance suites and hardened adversarial execution remain future work.
 8. **Anti-M (local review contract implemented, actual release future)**: Freeze approved Vault stage/ledger-head, generated source and builder/verifier receipts, mandatory acceptance cases and mutant results. Human-held-key HMAC records only claimed review intent; it does not authenticate identity, certify a signed commit, mark DONE or deploy.
 
+9. **Independent witness checkpoint (offline, implemented)**: Recheck all current Anti-M evidence and write a metadata-only local checkpoint. Verification requires an expected SHA-256 saved in a genuinely separate custody domain. This helps detect whole-ledger/receipt rewriting only if that original digest remains independently trustworthy; it does not attest identity, enable autonomous DONE or deploy code.
+
 ## Trust boundaries
 
 ```text
@@ -49,7 +51,9 @@ Record classes are OBSERVED, VERIFIED, INFERRED, DREAMED, SIMULATED, UNKNOWN. On
 - **M4, this PR:** restricted Docker **probe only**, with a verified approved SPEC-only input, no network, read-only root and minimal container privileges, plus a synthetic real-Docker CI smoke test. Not a full coding worker or isolated hostile-code guarantee.
 - **M4b, merged reference:** isolated deterministic builder with bounded generated source and quarantine artifacts (PR #8). General provider-based code generation remains future work.
 - **M5, merged:** independent reference verifier with 7 fixed acceptance checks, 3 AST source mutations, pinned Docker image and source/stage/spec/receipt binding.
-- **M6, this PR:** Anti-M strict completion contract, current ledger-head binding, recheckable eligibility, explicit HMAC-based local review attestation and negative tests for stale/tampered evidence. Real reviewer authentication, signed Git release, deployment and DONE remain future milestones.
+- **M6, merged:** Anti-M strict completion contract, current ledger-head binding, recheckable eligibility, explicit HMAC-based local review attestation and negative tests for stale/tampered evidence. Real reviewer authentication, signed Git release, deployment and DONE remain future milestones.
 - **M5:** real mutation runner, test snapshot pinning, Anti-M DONE contract and human release signing.
 
 No external provider is required by core. No third-party implementation or code is copied into the project.
+
+- **M7, this PR:** create-only offline witness checkpoint and independently retained digest verification. No external witness service, signed ledger or release approval.

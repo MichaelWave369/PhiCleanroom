@@ -14,6 +14,7 @@ PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuil
 
 ## What works now
 
+- **Independent witness checkpoint (offline):** strict create-only commitment over current Anti-M contract, Vault ledger head, stage, source and receipts. Verification requires a separately retained earlier SHA-256; it detects coordinated local replacement only if that expected hash remains independently protected. No identity authentication or release. See [Witness Guide](docs/WITNESS.md).
 - **Anti-M completion gate v1 (local):** freezes an approved stage, current Vault ledger head, source SHA-256, builder/verifier receipts, 7 checks and 3 mutations into a strict completion contract. A separate opt-in 32-byte-key HMAC attestation records *human-claimed release review*, without deploying or marking DONE. Identity is not authenticated. See [Anti-M Guide](docs/ANTI_M.md).
 - **Anti-M React completion console (read-only):** compare local completion-contract, builder/verifier receipt and quarantined-source SHA-256 hashes against the frozen lineage. Synthetic demo included. Does not authenticate humans, approve code, or connect to the Vault.
 - **Evidence Vault v2:** local content-addressed evidence artifacts, a target snapshot file, and hash-verified object contents.
@@ -51,6 +52,14 @@ phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA
 # Execution is opt-in, and writes only an out-of-vault receipt:
 phicleanroom sandbox probe --vault ./local-evidence-vault --stage YOUR_STAGE_SHA --image sha256:YOUR_IMAGE_ID --receipt ./probe-receipt.json --execute --acknowledge-docker-risk
 ```
+
+## Freeze an out-of-band witness checkpoint
+
+After completing and checking an Anti-M contract, the offline witness command can freeze a metadata-only checkpoint. Its SHA-256 must be saved **somewhere independently controlled**, such as a separate offline record, before it can help detect a coordinated local evidence rewrite.
+
+    phicleanroom witness checkpoint --vault ./local-evidence-vault --artifacts ./unverified-output --builder-receipt ./unverified-receipt.json --verifier-receipt ./independent-verification.json --contract ./completion-contract.json --out ./witness-checkpoint.json
+
+See [Witness checkpoints](docs/WITNESS.md) for the required separately retained expected SHA-256, verification command and limitations. This is not a signature or DONE state.
 
 ## Run Anti-M completion review
 

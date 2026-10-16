@@ -35,6 +35,8 @@ both receipts and a source digest entirely in the browser. This is
 only a teaching example. It does not execute a test suite, run Docker,
 check human identity or issue a real completion record.
 
+The **offline witness checkpoint** from PR #12 is not verified by this hosted viewer. Use the [Witness CLI](WITNESS.md) and a previously retained independent digest. Do not paste private HMAC keys or original investigator evidence into the public site.
+
 ## Status definitions
 
 - LOCAL FILE LINKS MATCH: all four input files are present, their
