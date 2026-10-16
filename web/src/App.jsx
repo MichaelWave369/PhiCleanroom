@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { CONTROL_FIELDS, INITIAL_CHECKS, evaluateDemo } from './demoGate.js'
 import LocalInspector from './LocalInspector.jsx'
+import AntiMConsole from './AntiMConsole.jsx'
 
 const REPO = 'https://github.com/MichaelWave369/PhiCleanroom'
 
@@ -20,7 +21,7 @@ const stages = [
   { number: '04', name: 'Separate', eyebrow: 'SPECIFICATION BOUNDARY', status: 'PARTIAL / REFERENCE',
     headline: 'The builder packet contains only the contract.',
     description: 'An approved candidate can export behavior-only SPEC.md. A deterministic reference Docker worker can now return a quarantined candidate source file from one supported synthetic rule. General independent AI builders are still planned.',
-    proof: 'SPEC.md only · no evidence artifacts · OS isolation still planned' },
+    proof: 'Approved SPEC.md · restricted Docker reference worker · quarantined source' },
   { number: '05', name: 'Challenge', eyebrow: 'INDEPENDENT TESTING', status: 'PARTIAL / REFERENCE',
     headline: 'Try to prove the implementation wrong.',
     description: 'A separate pinned Docker verifier now checks one synthetic search contract with seven acceptance checks and three source-derived faulty mutants. General coverage and hostile-code security are not yet solved.',
@@ -189,7 +190,7 @@ function Lab() {
 function Standards() {
   return <section className="page-section" aria-labelledby="standards-title">
     <div className="section-shell">
-      <SectionHeading id="standards" number="04" overline="DESIGN PRINCIPLES" title="A proof chain, not a promise." description="Clean-room design is a governance method. Its value comes from verifiable boundaries and narrow claims, not from the number of agents in the room." />
+      <SectionHeading id="standards" number="05" overline="DESIGN PRINCIPLES" title="A proof chain, not a promise." description="Clean-room design is a governance method. Its value comes from verifiable boundaries and narrow claims, not from the number of agents in the room." />
       <div className="standards-grid">
         <article className="standard-card"><span className="standard-glyph">01 /</span><h3>Ledger above ego.</h3><p>A worker's “done” message is a claim. Verified checks, pinned inputs, and human decisions determine the actual state.</p><span className="standard-foot">PROVENANCE OVER CONFIDENCE</span></article>
         <article className="standard-card"><span className="standard-glyph">02 /</span><h3>Information minimization.</h3><p>Only approved behavioral rules cross into the builder packet. Evidence and investigator traces stay on their side of the boundary.</p><span className="standard-foot">BEHAVIOR WITHOUT SOURCE</span></article>
@@ -203,7 +204,7 @@ function Standards() {
 function Roadmap() {
   return <section className="page-section roadmap-section" aria-labelledby="roadmap-title">
     <div className="section-shell">
-      <SectionHeading id="roadmap" number="05" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
+      <SectionHeading id="roadmap" number="06" overline="IMPLEMENTATION STATUS" title="Built honestly. Shipped deliberately." description="Current repository capabilities are kept separate from upcoming integrations. No pretend deployment, no fictional autonomous engineer." />
       <div className="capability-grid">
         {capabilityCards.map((card, idx) => <article key={card.id} className={'capability-card ' + (idx > 5 ? 'capability-planned' : '')}>
           <div className="capability-top"><span className="capability-id">{card.id}</span><span className={'capability-badge ' + (idx > 5 ? 'is-planned' : '')}>{card.mark}</span></div>
@@ -223,10 +224,10 @@ export default function App() {
   return <div className="app">
     <header className="site-header"><div className="section-shell header-wrap"><a className="brand" href="#top" aria-label="PhiCleanroom homepage" onClick={() => setMenuOpen(false)}><Mark /><span className="brand-text"><strong>PHI<span>CLEANROOM</span></strong><small>ENGINEERING THE EVIDENCE</small></span></a>
       <nav id="site-navigation" className={'nav-links ' + (menuOpen ? 'is-open' : '')} aria-label="Main navigation">
-        {[['Pipeline','#pipeline'],['Evidence Lab','#lab'],['Local Inspector','#inspector'],['Principles','#standards'],['Roadmap','#roadmap']].map(([label,href]) => <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>)}
+        {[['Pipeline','#pipeline'],['Evidence Lab','#lab'],['Local Inspector','#inspector'],['Anti-M','#anti-m'],['Principles','#standards'],['Roadmap','#roadmap']].map(([label,href]) => <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>)}
       </nav>
       <div className="header-actions"><a className="header-source" href={REPO} target="_blank" rel="noreferrer">GITHUB <ArrowIcon diagonal size={15} /></a><button type="button" className="mobile-menu" aria-controls="site-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? '✕' : '☰'}</button></div></div></header>
-    <main><Hero /><div className="rule-wide" /><Pipeline /><Lab /><LocalInspector /><Standards /><Roadmap /></main>
+    <main><Hero /><div className="rule-wide" /><Pipeline /><Lab /><LocalInspector /><AntiMConsole /><Standards /><Roadmap /></main>
     <Footer />
   </div>
 }

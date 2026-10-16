@@ -31,6 +31,10 @@ test('the actual React App renders instead of producing a blank screen', async (
     assert.match(markup, /LOCAL MANIFEST INSPECTOR/)
     assert.match(markup, /Choose v2 JSON manifest/)
     assert.match(markup, /NO FILE UPLOADS/)
+    assert.match(markup, /ANTI-M COMPLETION CONSOLE/)
+    assert.match(markup, /Choose completion-contract.json/)
+    assert.match(markup, /NO AUTOMATIC DONE/)
+    assert.match(markup, /href=\"#anti-m\"/)
     assert.ok(markup.length > 10_000, 'expected the full page, not an empty root')
   } finally {
     await vite.close()

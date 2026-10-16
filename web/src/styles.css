@@ -278,3 +278,76 @@ button:focus-visible,a:focus-visible{outline:2px solid #a5f6dc;outline-offset:4p
 .inspector-footnote{border-left:2px solid #a6855d;margin-top:19px;padding:8px 12px;color:#a5a799;font-size:11px;line-height:1.7}
 @media(max-width:930px){.inspector-columns{grid-template-columns:1fr}.inspector-upload{border-right:none;border-bottom:1px solid #314448}.inspector-empty{min-height:300px}.inspector-counters{grid-template-columns:1fr 1fr 1fr}}
 @media(max-width:650px){.inspector-upload,.inspector-results{padding:23px 17px}.inspector-top,.inspector-bottom{padding:14px 14px;font-size:8px;flex-wrap:wrap}.inspector-upload h3{font-size:23px}.inspector-counters{grid-template-columns:1fr 1fr}.inspector-counters>div:last-child{grid-column:span 2}.inspector-hash-row{flex-wrap:wrap}.inspector-hash-row code{max-width:100%;font-size:8px}.inspector-rule-list{max-height:440px}.nav-links a{font-size:14px}}
+
+
+/* Anti-M public-only completion console. No upload, signature or release controls. */
+.antim-section{background:radial-gradient(ellipse 60% 60% at 89% 10%,rgba(70,129,107,.12),transparent),#091115;border-top:1px solid #2e4545}
+.antim-shell{background:linear-gradient(135deg,#111f21,#0c161a);border:1px solid #38544e;box-shadow:0 30px 88px rgba(0,0,0,.18)}
+.antim-header{display:flex;align-items:center;justify-content:space-between;padding:16px 26px;border-bottom:1px solid #324b47;gap:14px;font:9px "DM Mono",monospace;letter-spacing:.095em;color:#93c2af}
+.antim-header span:first-child{display:flex;gap:10px;align-items:center}.antim-header span:last-child{color:#bba582}
+.antim-main{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+.antim-load{padding:32px 27px;border-right:1px solid #304b44}
+.antim-load h3{font-size:28px;font-weight:500;letter-spacing:-.045em;margin:14px 0}
+.antim-load>p{font-size:12px;line-height:1.8;color:#9fb1a9;margin:0 0 23px}
+.antim-file-list{display:grid;gap:12px}
+.antim-file{background:#102024;border:1px solid #314c47;padding:15px;min-width:0;transition:border .2s}
+.antim-file.present{border-color:#44866d}
+.antim-file-top{display:flex;justify-content:space-between;gap:12px;color:#95c8b3;font:9px "DM Mono",monospace;letter-spacing:.05em;margin-bottom:10px}
+.antim-file-top span:last-child{color:#738f85}
+.antim-picker{position:relative;display:flex;gap:10px;align-items:center;border:1px dashed #4c7264;background:#172b2b;padding:13px;color:#d6ecdf;min-height:48px;cursor:pointer}
+.antim-picker:hover{border-color:#a3e9cf;background:#203935}
+.antim-picker:focus-within{outline:2px solid #b0f0d7;outline-offset:3px}
+.antim-picker>span:first-of-type{color:#9ce8cb;font-size:19px;line-height:1}
+.antim-picker strong{font-size:11px;font-weight:500;overflow-wrap:anywhere;min-width:0;flex:1}
+.antim-picker .antim-pick-action{font:8px "DM Mono",monospace;color:#8bc3ac}
+.antim-picker input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.antim-picker input:disabled{cursor:not-allowed}
+.antim-sha{display:flex;justify-content:space-between;gap:10px;align-items:center;padding-top:12px;font:9px "DM Mono",monospace;color:#739b8c}
+.antim-sha code{font-size:9px;color:#a6d6be;overflow-wrap:anywhere;text-align:right}
+.antim-input-error{background:#36231e;border:1px solid #9b6047;color:#f0bea0;font-size:11px;line-height:1.5;padding:10px;margin-top:10px;overflow-wrap:anywhere}
+.antim-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin:22px 0}
+.antim-demo{border:1px solid #6e9d84;background:#183c31;color:#b5f6d7;font:10px "DM Mono",monospace;letter-spacing:.04em;padding:12px 13px;display:flex;align-items:center;gap:13px}
+.antim-demo:hover{background:#265a46}.antim-demo:disabled{opacity:.5;cursor:wait}
+.antim-load .antim-note{font-size:11px;line-height:1.8;color:#829d90;margin:0}
+.antim-right{padding:32px 28px;background:rgba(16,29,29,.45);min-width:0}
+.antim-readout-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font:9px "DM Mono",monospace;color:#8fc7ad;letter-spacing:.06em}
+.antim-readout-top span:last-child{color:#bba582}
+.antim-demo-banner{border:1px solid #ad8452;color:#f1ce92;background:#312519;padding:13px;font:10px/1.65 "DM Mono",monospace;margin-top:22px}
+.antim-decision{display:flex;align-items:flex-start;gap:17px;margin-top:23px;padding:23px 18px;border:1px solid #536f5b;background:linear-gradient(135deg,rgba(74,107,81,.18),rgba(20,35,30,.12))}
+.antim-decision.needs-files{border-color:#725942;background:linear-gradient(135deg,rgba(102,71,42,.17),rgba(20,35,30,.1))}
+.antim-decision.has-failure{border-color:#a35e54;background:linear-gradient(135deg,rgba(104,52,47,.2),rgba(30,26,26,.1))}
+.antim-decision-mark{display:flex;align-items:center;justify-content:center;min-width:43px;height:43px;border:1px solid #92d4b1;color:#b5eed1;font-size:27px}
+.needs-files .antim-decision-mark{border-color:#ad8354;color:#debc8c}.has-failure .antim-decision-mark{border-color:#d07f76;color:#ffaba0}
+.antim-overline{font:9px "DM Mono",monospace;letter-spacing:.1em;color:#8baea2}
+.antim-decision h3{font:500 17px/1.3 "DM Mono",monospace;color:#c8f9e0;margin:10px 0 9px}
+.needs-files .antim-decision h3{color:#e6c69d}.has-failure .antim-decision h3{color:#ffc3b4}
+.antim-decision p{font-size:12px;color:#a7b6ac;line-height:1.7;margin:0}
+.antim-progress-header{display:flex;justify-content:space-between;margin:24px 0 10px;font:9px "DM Mono",monospace;letter-spacing:.08em;color:#94b4a5}
+.antim-progress-header strong{color:#c0ebd1}
+.antim-progress-track{height:5px;background:#253c36;margin-bottom:23px}
+.antim-progress-track span{display:block;height:100%;background:#91dcb9;transition:width .2s}
+.antim-gates{border-top:1px solid #2e4541;display:flex;flex-direction:column}
+.antim-gate{padding:14px 0;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid #2e4541}
+.antim-gate-mark{width:24px;height:24px;flex-shrink:0;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font:15px "DM Mono",monospace}
+.am-success{color:#a4ecc9}.am-fail{color:#f0a096}.am-wait{color:#d5b48b}.am-unknown{color:#96acaa}
+.antim-gate-copy{flex:1;min-width:0}
+.antim-gate-copy b{color:#e1eee6;font-size:12px;font-weight:500}
+.antim-gate-copy p{margin:5px 0 0;font-size:10px;line-height:1.65;color:#8ba59a}
+.antim-status{font:8px "DM Mono",monospace;white-space:nowrap;margin-top:3px;letter-spacing:.04em}
+.antim-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:21px}
+.antim-metrics>div{background:#132a27;border:1px solid #30564a;padding:13px 10px;min-width:0;display:flex;flex-direction:column;gap:9px}
+.antim-metrics span{font:8px "DM Mono",monospace;color:#7eac9a}
+.antim-metrics strong{color:#d1efd8;font:500 18px "DM Mono",monospace}
+.antim-metrics small{font-size:9px;line-height:1.6;color:#8ea59a}
+.antim-binding{margin-top:24px;background:#101e21;border:1px solid #304945;padding:19px}
+.antim-binding dl{margin:14px 0 0}
+.antim-binding dl>div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #2b403e;padding:11px 0}
+.antim-binding dt{font-size:10px;color:#92ad9f}
+.antim-binding dd{margin:0;font:10px "DM Mono",monospace;color:#bedbca;overflow-wrap:anywhere;text-align:right}
+.antim-bottom{display:flex;gap:15px;align-items:flex-start;border-top:1px solid #6b5039;background:#201c19;padding:23px 28px}
+.antim-bottom-mark{border:1px solid #bb9c72;width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#efcda0;font:16px "DM Mono",monospace}
+.antim-bottom strong{color:#efca95;font:11px "DM Mono",monospace;letter-spacing:.07em}
+.antim-bottom p{font-size:11px;color:#c1b3a0;line-height:1.8;margin:10px 0}
+.antim-bottom a{font:10px "DM Mono",monospace;color:#e9d2a2;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:1080px){.antim-main{grid-template-columns:1fr}.antim-load{border-right:0;border-bottom:1px solid #304b44}.antim-file-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:670px){.antim-header{padding:13px 16px;flex-wrap:wrap;font-size:8px}.antim-load,.antim-right{padding:24px 16px}.antim-file-list{grid-template-columns:1fr}.antim-decision{padding:17px 12px}.antim-decision h3{font-size:14px}.antim-gate{gap:8px}.antim-status{font-size:7px;max-width:78px;white-space:normal;text-align:right}.antim-metrics{grid-template-columns:1fr 1fr}.antim-metrics>div:last-child{grid-column:span 2}.antim-bottom{padding:20px 14px}.nav-links a{font-size:14px}}

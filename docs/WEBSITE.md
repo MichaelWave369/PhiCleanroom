@@ -4,6 +4,8 @@ The repository includes a standalone, mobile-responsive React/Vite site in web/.
 It is an explanatory front-end **only**. It cannot read the investigator's local
 vault, approve real rules, run REA, or authorize releases. The Evidence Lab section
 uses a pure deterministic simulation implemented in web/src/demoGate.js.
+The **Anti-M Completion Console** is a separate read-only browser-local v1 completion-contract/receipt/source digest reconciler with a synthetic demo, not a signed approval checker or Vault backend. See [ANTI_M_CONSOLE.md](ANTI_M_CONSOLE.md).
+
 The **Local Inspector** section is a separate browser-local v2 candidate viewer that computes actual SHA-256 digests for user-selected files; it never approves real rules or communicates with the private vault. See [BROWSER_INSPECTOR.md](BROWSER_INSPECTOR.md).
 
 ## Local development
@@ -50,6 +52,7 @@ if the font service is inaccessible.
 ## Security and integrity
 
 - The Evidence Lab demo never sends input to an API. Its switches alter local React state.
+- The Anti-M console hashes locally selected completion/receipt/source files and checks declared link consistency, but cannot independently verify the private ledger, tests, provenance or human identity.
 - The Local Inspector reads chosen JSON and artifact files with browser File APIs and Web Crypto, comparing SHA-256 hashes entirely in memory, without uploading files or saving local data.
 - Toggling approval in the demo is **not** a real authenticated human signature.
 - No evidence artifacts, investigation logs, original software, secrets, or local

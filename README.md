@@ -4,17 +4,18 @@
 
 ## Public React website
 
-The project includes a responsive React/Vite GitHub Pages website in [web/](web/), with a pipeline explorer, clearly labeled evidence-gate simulation, a browser-local v2 candidate inspector with SHA-256 file matching, implementation status, and links to the working Python CLI.
+The project includes a responsive React/Vite GitHub Pages website in [web/](web/), with a pipeline explorer, clearly labeled evidence-gate simulation, a browser-local v2 candidate inspector, a read-only Anti-M completion console with local receipt/source SHA-256 reconciliation, implementation status, and links to the working Python CLI.
 
 **Expected URL after Pages is configured and deployed:** https://michaelwave369.github.io/PhiCleanroom/
 
-See [website setup and deployment](docs/WEBSITE.md) for required owner-side **Settings > Pages > GitHub Actions** configuration. The [browser inspector](docs/BROWSER_INSPECTOR.md) reads user-selected v2 manifests and files entirely in client memory, without uploads. This site is **not** the private Python vault, an authenticated approval service, or a secure builder process.
+See [website setup and deployment](docs/WEBSITE.md) for required owner-side **Settings > Pages > GitHub Actions** configuration. The [Anti-M console](docs/ANTI_M_CONSOLE.md) locally checks contract, receipt and source-file hashes, but never validates a private Vault or authorizes a release. The [browser inspector](docs/BROWSER_INSPECTOR.md) reads user-selected v2 manifests and files entirely in client memory, without uploads. This site is **not** the private Python vault, an authenticated approval service, or a secure builder process.
 
 PhiCleanroom is an **original, provider-neutral clean-room workflow** for rebuilding observable software features from reviewed behavioral specifications. The investigator, evidence reviewer, isolated builder, tester, and release approver have distinct responsibilities.
 
 ## What works now
 
 - **Anti-M completion gate v1 (local):** freezes an approved stage, current Vault ledger head, source SHA-256, builder/verifier receipts, 7 checks and 3 mutations into a strict completion contract. A separate opt-in 32-byte-key HMAC attestation records *human-claimed release review*, without deploying or marking DONE. Identity is not authenticated. See [Anti-M Guide](docs/ANTI_M.md).
+- **Anti-M React completion console (read-only):** compare local completion-contract, builder/verifier receipt and quarantined-source SHA-256 hashes against the frozen lineage. Synthetic demo included. Does not authenticate humans, approve code, or connect to the Vault.
 - **Evidence Vault v2:** local content-addressed evidence artifacts, a target snapshot file, and hash-verified object contents.
 - **Frozen candidate specifications:** a SHA-256 identifies the exact reviewed rule set and referenced artifacts.
 - **Reviewer decision ledger:** per-rule approve, return, or reject records in a hash-linked append-only-by-the-app event file.
