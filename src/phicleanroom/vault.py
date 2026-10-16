@@ -248,6 +248,9 @@ def verify_history(root: Path) -> list[dict[str, Any]]:
                 raise VaultError("REVIEW refers to unknown stage/rule")
             if data["decision"] not in ("approve", "return", "reject"):
                 raise VaultError("invalid REVIEW decision")
+            matched = next(rule for rule in candidate["rules"] if rule["id"] == data["rule_id"])
+            if data["decision"] == "approve" and any(item["provenance"] != "VERIFIED" for item in matched["evidence"]):
+                raise VaultError("ledger includes invalid approval of non-VERIFIED evidence")
             if not _single_line(data["reviewer"]) or not isinstance(data["note"], str):
                 raise VaultError("invalid REVIEW metadata")
     return events
