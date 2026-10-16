@@ -201,6 +201,52 @@ class DeterministicEvidenceJudge:
         }
 
 
+ALLOWED_ADVICE = frozenset({"NEEDS_HUMAN_REVIEW", "RETURN_FOR_EVIDENCE"})
+ALLOWED_REASONS = frozenset({
+    "TARGET_SNAPSHOT_UNCHECKED", "EVIDENCE_BYTES_UNCHECKED", "HUMAN_VERIFICATION_REQUIRED"
+})
+
+
+def validate_judge_report(candidate: dict[str, Any], report: Any) -> dict[str, Any]:
+    """Validate the exact typed output before any future model adapter is accepted."""
+    if not isinstance(report, dict):
+        raise AgentContractError("judge response must be JSON object")
+    _fields(report, {"schema_version", "kind", "adapter", "candidate_sha256",
+                     "decision", "rules", "authority", "note"}, "judge output")
+    expected_sha = hashlib.sha256(vault.canonical(candidate)).hexdigest()
+    if type(report.get("schema_version")) is not int or report["schema_version"] != 1:
+        raise AgentContractError("judge report version is invalid")
+    if report.get("kind") != "ADVISORY_ONLY" or report.get("authority") != "NONE":
+        raise AgentContractError("judge must never claim approval or release authority")
+    if report.get("candidate_sha256") != expected_sha:
+        raise AgentContractError("judge report is not bound to this candidate")
+    _line(report.get("adapter"), "judge.adapter", 100)
+    _line(report.get("note"), "judge.note", 500)
+    if report.get("decision") not in ALLOWED_ADVICE:
+        raise AgentContractError("judge overall advice not allowed")
+    rows = report.get("rules")
+    if not isinstance(rows, list) or len(rows) != len(candidate["rules"]):
+        raise AgentContractError("judge must advise on every candidate rule")
+    for original, row in zip(candidate["rules"], rows):
+        if not isinstance(row, dict):
+            raise AgentContractError("judge rule advice must be objects")
+        _fields(row, {"rule_id", "decision", "reasons"}, "judge rule")
+        if row.get("rule_id") != original["id"] or row.get("decision") not in ALLOWED_ADVICE:
+            raise AgentContractError("judge returned wrong rule or invalid decision")
+        reasons = row.get("reasons")
+        if not isinstance(reasons, list) or len(set(map(str, reasons))) != len(reasons) or any(
+            not isinstance(reason, str) or reason not in ALLOWED_REASONS for reason in reasons
+        ):
+            raise AgentContractError("judge reasons must be unique allowed enums")
+        if (row["decision"] == "NEEDS_HUMAN_REVIEW") != (len(reasons) == 0):
+            raise AgentContractError("judge decision/reason contradiction")
+    aggregate = ("NEEDS_HUMAN_REVIEW" if all(row["decision"] == "NEEDS_HUMAN_REVIEW" for row in rows)
+                 else "RETURN_FOR_EVIDENCE")
+    if report["decision"] != aggregate:
+        raise AgentContractError("judge aggregate disagrees with rule decisions")
+    return report
+
+
 INVESTIGATORS = {StructuredObservationInvestigator.adapter_id: StructuredObservationInvestigator}
 JUDGES = {DeterministicEvidenceJudge.adapter_id: DeterministicEvidenceJudge}
 
