@@ -1,0 +1,47 @@
+name: PhiCleanroom independent verification smoke
+
+on:
+  pull_request:
+    paths:
+      - "src/phicleanroom/verifier*.py"
+      - "src/phicleanroom/cli.py"
+      - "tests/test_verifier.py"
+      - "tests/docker_verifier_smoke.py"
+      - "worker/verify_worker.py"
+      - "worker/Verifier.Dockerfile"
+      - ".github/workflows/verification-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/phicleanroom/verifier*.py"
+      - "src/phicleanroom/cli.py"
+      - "tests/test_verifier.py"
+      - "tests/docker_verifier_smoke.py"
+      - "worker/verify_worker.py"
+      - "worker/Verifier.Dockerfile"
+      - ".github/workflows/verification-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PhiCleanroom
+        run: python -m pip install -e .
+      - name: Build two separately pinned worker images
+        run: |
+          docker build -f worker/Builder.Dockerfile -t phicleanroom-builder:ci ./worker
+          docker build -f worker/Verifier.Dockerfile -t phicleanroom-verifier:ci ./worker
+      - name: Run real two-worker integration, three source-level mutants and stale receipt control
+        run: |
+          BUILDER="$(docker image inspect --format '{{.Id}}' phicleanroom-builder:ci)"
+          VERIFIER="$(docker image inspect --format '{{.Id}}' phicleanroom-verifier:ci)"
+          python tests/docker_verifier_smoke.py "$BUILDER" "$VERIFIER"
