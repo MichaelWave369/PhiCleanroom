@@ -5,7 +5,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from phicleanroom import antim, builder, vault, verifier
+from phicleanroom import antim, builder, vault, verifier, witness
 
 RULE = "An exact title query finds its matching item."
 
@@ -70,6 +70,18 @@ def main(builder_image: str, verifier_image: str) -> None:
         assert antim.assess(private, quarantine, build_receipt,
                             verify_receipt, completion_file)["authority"] == "NONE"
         assert "human" in json.dumps(json.loads(completion_file.read_text())).lower() or completion["authority"] == "NONE"
+        # Witness checkpoint binds the real two-worker receipts to an
+        # independent expected digest. It is not an authenticated signature.
+        checkpoint_file = root / "witness-checkpoint.json"
+        anchor = witness.checkpoint(
+            private, quarantine, build_receipt, verify_receipt,
+            completion_file, checkpoint_file)
+        assert anchor["status"] == "CHECKPOINT_CREATED_UNANCHORED"
+        verified_anchor = witness.verify_checkpoint(
+            private, quarantine, build_receipt, verify_receipt,
+            completion_file, checkpoint_file, anchor["checkpoint_sha256"])
+        assert verified_anchor["status"] == "INDEPENDENT_CHECKPOINT_MATCH"
+        assert verified_anchor["authority"] == "NO_APPROVAL_NO_DONE_NO_DEPLOY"
         # Mutate quarantined bytes and prove old builder receipt cannot bless them.
         (quarantine / "search.py").write_text("def search(items, query):\n    return []\n")
         try:
@@ -88,10 +100,19 @@ def main(builder_image: str, verifier_image: str) -> None:
             pass
         else:
             raise AssertionError("Anti-M accepted a tampered source using old receipts")
+        try:
+            witness.verify_checkpoint(
+                private, quarantine, build_receipt, verify_receipt,
+                completion_file, checkpoint_file, anchor["checkpoint_sha256"])
+        except (antim.CompletionError, verifier.VerifyError, witness.WitnessError):
+            pass
+        else:
+            raise AssertionError("Witness accepted a changed source after checkpoint")
         print("REAL DOCKER INDEPENDENT VERIFICATION PASS")
         print("7 acceptance checks passed; 3 AST-mutated candidates killed by assertions")
         print("Tampered candidate blocked from reusing old builder receipt")
         print("Anti-M freeze: real receipts accepted before mutation, rejected after source tamper")
+        print("Independent witness hash: unchanged evidence matches, tampered source blocked")
         print("No automatic release, no approval authority")
 
 
